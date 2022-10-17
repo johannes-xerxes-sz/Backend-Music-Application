@@ -64,7 +64,7 @@ const deleteSong = (req, res, next) => {
     res
     .status(200)
     .setHeader('Content-Type', 'application/json')
-    .json( { success: true, msg: `Update the Song with id: ${req.params.songId}`}) // ${req.params.songId}
+    .json( { success: true, msg: `Deleted the Song with id: ${req.params.songId}`}) // ${req.params.songId}
 }
 
 module.exports = {

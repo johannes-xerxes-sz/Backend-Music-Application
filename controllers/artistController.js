@@ -64,7 +64,7 @@ const deleteArtist = (req, res, next) => {
     res
     .status(200)
     .setHeader('Content-Type', 'application/json')
-    .json( { success: true, msg: `Update the Artist with id: ${req.params.artistId}`}) // ${req.params.songId}
+    .json( { success: true, msg: `Deleted the Artist with id: ${req.params.artistId}`}) // ${req.params.songId}
 }
 
 module.exports = {
