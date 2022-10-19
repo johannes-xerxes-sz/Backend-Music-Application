@@ -7,10 +7,12 @@ const errorHandler = require('./middlewares/error');
 const artist = require('./routes/artist');
 const song = require('./routes/song');
 const user = require('./routes/user');
+const connectDB = require('./config/db');
 
 
 dotenv.config({ path: './config/config.env' });
 
+connectDB();
 
 const app = express(); 
 

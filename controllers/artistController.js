@@ -1,8 +1,10 @@
+const Artist = require('../models/Artist');
+
 //! For ‘/’ endpoint: 
 
-const getArtists = (req, res, next) => {
+const getArtists = async (req, res, next) => {
 
-    if (Object.keys(req.query).length) {
+/*     if (Object.keys(req.query).length) {
         const {
             firstName,
             lastName,
@@ -17,54 +19,96 @@ const getArtists = (req, res, next) => {
         for (let i = 0; i < filter.length; i++) {
             console.log(`Searching artist by: ${filter[i]}`)
         }
+    } */
+
+    try {
+        const result = await Artist.find();
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(result)
+    }
+    catch (err) {
+        throw new Error(`Error retrieving Song: ${err.message}`);
     }
 
-    res
-    .status(201)
-    .setHeader('Content-Type', 'application/json')
-    .json( { success: true, msg:'Show me all Artist'})
 }
 
-const postArtist = (req, res, next) => {
-    res
-    .status(201)
-    .setHeader('Content-Type', 'application/json')
-    .json( { msg: `create one item with the following fields:
-    firstName: ${req.body.firstName}
-    lastName: ${req.body.lastName}
-    gender: ${req.body.gender}`
-})
+const postArtist = async (req, res, next) => {
+    try {
+        const result = await Artist.create(req.body);
+        res
+        .status(201)
+        .setHeader('Content-Type', 'application/json')
+        .json(result)
+    }
+    catch (err) {
+        throw new Error(`Error retrieving Song: ${err.message}`);
+    }
+
 }
 
-const deleteArtists = (req, res, next) => {
-    res
-    .status(201)
-    .setHeader('Content-Type', 'application/json')
-    .json( { success: true, msg:'Deleted all Artist'})
+const deleteArtists = async (req, res, next) => {
+    try {
+        await Artist.deleteMany();
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json({ success: true, msg: 'deleted all artist'})
+    }
+    catch (err) {
+        throw new Error(`Error retrieving artist: ${err.message}`);
+    }
 }
 
 
 //! For artistId endpoint: 
 
-const getArtist = (req, res, next) => {
-    res
-    .status(200)
-    .setHeader('Content-Type', 'application/json')
-    .json( { success: true, msg: `Show the Artist with id: ${req.params.artistId} `}) // ${req.params.songId}
+const getArtist = async (req, res, next) => {
+    try {
+        const result = await Artist.findById(req.params.categoryId);
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(result)
+    }
+    catch (err) {
+        throw new Error (`Error retrieving artist with ID of: ${req.params.categoryId} ${err.message}`);
+    }
 }
 
-const updateArtist = (req, res, next) => {
-    res
-    .status(200)
-    .setHeader('Content-Type', 'application/json')
-    .json( { success: true, msg: `Update the Artist with id: ${req.params.artistId}`}) // ${req.params.songId}
+const updateArtist = async (req, res, next) => {
+    try {
+        const result = await Artist.findByIdAndUpdate(req.params.categoryId, {
+            $set: req.body
+
+        }, {new: true});
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(result)
+    }
+    catch (err) {
+        throw new Errpr(`Error updating artist with ID of: ${req.params.artistId} ${err.message}`);
+    }
 }
 
-const deleteArtist = (req, res, next) => {
+
+const deleteArtist = async (req, res, next) => {
+    try {
+        await Artist.findByIdAndDelete(req.params.artistId);
+        res 
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json({ success: true, msg: `delete artist with id: ${req.params.artistId}`})
+    }
+    catch (err) {
+        throw new Error(`Error deleting artist with ID of: ${req.params.categoryId} ${err.message}`);
+    }
     res
     .status(200)
     .setHeader('Content-Type', 'application/json')
-    .json( { success: true, msg: `Deleted the Artist with id: ${req.params.artistId}`}) // ${req.params.songId}
+    .json( { success: true, msg: `Deleted  the Artist with id: ${req.params.artistId}`}) // ${req.params.songId}
 }
 
 module.exports = {
