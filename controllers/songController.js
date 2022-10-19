@@ -103,7 +103,7 @@ const updateSong = async  (req, res, next) => {
 
 const deleteSong = async  (req, res, next) => {
     try {
-        await Song.findByIdAndDelete(req.params.songID);
+        await Song.findByIdAndDelete(req.params.songId);
 
         res
         .status(200)
