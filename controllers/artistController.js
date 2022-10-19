@@ -66,20 +66,20 @@ const deleteArtists = async (req, res, next) => {
 
 const getArtist = async (req, res, next) => {
     try {
-        const result = await Artist.findById(req.params.categoryId);
+        const result = await Artist.findById(req.params.artistId);
         res
         .status(200)
         .setHeader('Content-Type', 'application/json')
         .json(result)
     }
     catch (err) {
-        throw new Error (`Error retrieving artist with ID of: ${req.params.categoryId} ${err.message}`);
+        throw new Error (`Error retrieving artist with ID of: ${req.params.artistId} ${err.message}`);
     }
 }
 
 const updateArtist = async (req, res, next) => {
     try {
-        const result = await Artist.findByIdAndUpdate(req.params.categoryId, {
+        const result = await Artist.findByIdAndUpdate(req.params.artistId, {
             $set: req.body
 
         }, {new: true});
@@ -103,7 +103,7 @@ const deleteArtist = async (req, res, next) => {
         .json({ success: true, msg: `delete artist with id: ${req.params.artistId}`})
     }
     catch (err) {
-        throw new Error(`Error deleting artist with ID of: ${req.params.categoryId} ${err.message}`);
+        throw new Error(`Error deleting artist with ID of: ${req.params.artistId} ${err.message}`);
     }
     res
     .status(200)
