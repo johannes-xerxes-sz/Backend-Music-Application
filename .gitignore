@@ -1,2 +1,6 @@
 /node_modules
+<<<<<<< HEAD
 /configconfig/config.env
+=======
+/config/config.env
+>>>>>>> 82cbc8d (Assignment W2D1 song_only)
