@@ -3,7 +3,7 @@ const { query } = require("express")
 
 const getUsers = (req, res, next) => {
 
-    if (Object.keys(req.query).length) {
+/*     if (Object.keys(req.query).length) {
         const {
             userName,
             gender,
@@ -18,12 +18,19 @@ const getUsers = (req, res, next) => {
         for (let i = 0; i < filter.length; i++) {
             console.log(`Searching user by: ${filter[i]}`)
         }
-    }
+    } */
 
+    try { 
     res
-    .status(201)
+    .status(200)
     .setHeader('Content-Type', 'application/json')
     .json( { success: true, msg:'Show me all User'})
+    }
+    catch (err) {
+
+    }
+
+
 }
 
 const postUser = (req, res, next) => {
@@ -40,7 +47,7 @@ const postUser = (req, res, next) => {
 
 const deleteUsers = (req, res, next) => {
     res
-    .status(201)
+    .status(200)
     .setHeader('Content-Type', 'application/json')
     .json( { success: true, msg:'Deleted all User'})
 }
