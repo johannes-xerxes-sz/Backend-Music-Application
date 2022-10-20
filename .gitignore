@@ -1,6 +1,3 @@
 /node_modules
-<<<<<<< HEAD
-/configconfig/config.env
-=======
 /config/config.env
->>>>>>> refs/remotes/origin/week2-day1
+
