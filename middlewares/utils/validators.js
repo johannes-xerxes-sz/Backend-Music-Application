@@ -1,6 +1,8 @@
 const songValidator = (req, res, next) => { 
     if (req.body) {
-        if (!req.body.songTitle || !req.body.artist || !req.body.genre ) {
+        if (!req.body.songTitle || 
+            !req.body.artist || 
+            !req.body.genre ) {
             res
             .status(400)
             .setHeader('Content-Type', 'text/plain')
@@ -20,7 +22,9 @@ const songValidator = (req, res, next) => {
 
 const artistValidator = (req, res, next) => { 
     if (req.body) {
-        if (!req.body.firstName || !req.body.lastName || !req.body.gender ) {
+        if (!req.body.firstName || 
+            !req.body.lastName || 
+            !req.body.genre ) {
             res
             .status(400)
             .setHeader('Content-Type', 'text/plain')
@@ -41,7 +45,13 @@ const artistValidator = (req, res, next) => {
 
 const userValidator = (req, res, next) => { 
     if (req.body) {
-        if (!req.body.userName || !req.body.age || !req.body.gender ) {
+        if (!req.body.userName || 
+            !req.body.age || 
+            !req.body.gender ||
+            !req.body.email ||
+            !req.body.password ||
+            !req.body.firstName ||
+            !req.body.lastName ) {
             res
             .status(400)
             .setHeader('Content-Type', 'text/plain')

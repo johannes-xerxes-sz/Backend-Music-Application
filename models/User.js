@@ -1,29 +1,71 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const validator = require('validator');
 
-const ArtistSchema = new Schema({
-    userName: {  //! APPLICABLE TO CHANGES
+const UserSchema = new Schema({
+    userName: {  
         type: String,
         unique: true,
-        required: [true, 'Please add a user name!'],
-        maxLength: [10, 'User name can not be more than 10 characters']
-    },
-    age: { //! APPLICABLE TO CHANGES
-        type: Number,
         required: true,
-        min: 13
-    },    
-    gender: { //! APPLICABLE TO CHANGES
+        maxLength: 10
+    }, 
+    gender: {
         type: String,
-        required: [true, 'Please add a gender'],
+        required: true,
         enum: [
             'Male',
             'Female'
         ]
+    },
+    age: { 
+        type: Number,
+        required: true,
+        validate: (age) => {
+            return typeof age === 'number';
+        }
+    },    
+    email: {
+        type: String,
+        required: true,
+        validate: (email) => {
+            return validator.isEmail(email);
+        }
+    },
+    password: {
+        type: String,
+        required: true,
+        validate: (password) => {
+            return validator.isStrongPassword(password);
+        }
+    },
+    firstName: {
+        type: String,
+        required: true,
+        maxLength: 10
+    }, 
+    lastName: {
+        type: String,
+        required: true,
+        maxLength: 10
     }
 
 }, {
     timestamps: true
+}
+);
+
+UserSchema.pre('save', function (next) {
+    this.userName = this.userName.trim();
+    this.firstName = this.firstName.trim();
+    this.lastName = this.lastName.trim();
+
+    next();
 })
 
-module.exports = mongoose.model('Artist', ArtistSchema);
+
+
+UserSchema.post('save', function ()  {
+    this.firstName = this.gender.toUpperCase();
+}) 
+
+module.exports = mongoose.model('User', UserSchema);

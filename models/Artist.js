@@ -2,21 +2,18 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ArtistSchema = new Schema({
-    firstName: {  //! APPLICABLE TO CHANGES
+    firstName: {  
         type: String,
-        required: [true, 'Please add a first name'] 
+        required: true,
+        maxLength: 10
     },
-    lastName: { //! APPLICABLE TO CHANGES
+    lastName: { 
         type: String,
-        required: [true, 'Please add a last name']
+        required: true,
+        maxLength: 10
     },    
-    gender: { //! APPLICABLE TO CHANGES
-        type: String,
-        required: [true, 'Please add a gender'],
-        enum: [
-            'Male',
-            'Female'
-        ]
+    genre: { 
+        type: String
     }
 
 }, {

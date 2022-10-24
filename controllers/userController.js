@@ -1,79 +1,122 @@
-//! For ‘/’ endpoint: 
-const { query } = require("express")
+const User = require("../models/User");
 
-const getUsers = (req, res, next) => {
+const getUsers = async (req, res, next) => {
 
-/*     if (Object.keys(req.query).length) {
+    const filter = {};
+    const options = {};
+    if (Object.keys(req.query).length) {
         const {
             userName,
             gender,
-            age
+            email,
+            password,
+            firstName,
+            lastName,
+            limit,
+            age,
+            sortByAge
         } = req.query
 
-        const filter = [];
-        if (userName) filter.push(userName)
-        if (gender) filter.push(gender)
-        if (age) filter.push(age)
+        if (userName) filter.userName = true;
+        if (gender) filter.gender = true;
+        if (email) filter.email = true;
+        if (password) filter.password = true;
+        if (firstName) filter.firstName = true;
+        if (lastName) filter.lastName = true;
+        if (age) filter.age = true;
 
-        for (let i = 0; i < filter.length; i++) {
-            console.log(`Searching user by: ${filter[i]}`)
+        if (limit) options.limit = limit;
+        if (sortByAge) options.sort = {
+            age: sortByAge === 'asc' ? 1 : -1
         }
-    } */
+    }
 
     try { 
+        const users = await User.find({}, filter, options );
     res
     .status(200)
     .setHeader('Content-Type', 'application/json')
-    .json( { success: true, msg:'Show me all User'})
+    .json(users)
     }
     catch (err) {
-
+        throw new Error(`Error retrieving User: ${err.message}`);
     }
 
 
 }
 
-const postUser = (req, res, next) => {
-    res
-    .status(201)
-    .setHeader('Content-Type', 'application/json')
-    .json( {success: true,
-            msg: `create one item with the following fields:
-            userName: ${req.body.userName}
-            gender: ${req.body.gender}
-            age: ${req.body.age}
-            `})
+const postUser = async (req, res, next) => {
+    try {
+        const user = await User.create(req.body);
+        
+        res
+        .status(201)
+        .setHeader('Content-Type', 'application/json')
+        .json(user)
+    }
+    catch (err)
+    {
+        throw new Error(`Error deleting Users: ${err.message}`);
+    }
 }
 
-const deleteUsers = (req, res, next) => {
+const deleteUsers = async (req, res, next) => {
+    try {
+    await User.deleteMany();
     res
     .status(200)
     .setHeader('Content-Type', 'application/json')
     .json( { success: true, msg:'Deleted all User'})
-}
+        }
+    catch (err) {
+        throw new Error(`Error retrieving User:${err.message}`)
+                }
+            }
 
 
 //! For /:UserID endpoint: 
 
-const getUser = (req, res, next) => {
-    res
-    .status(200)
-    .setHeader('Content-Type', 'application/json')
-    .json( { success: true, msg: `Show the User with id: ${req.params.userId}`}) // ${req.params.songId}
+const getUser = async (req, res, next) => {
+    
+    
+    try {
+        const user = await User.findById(req.params.userId);
+
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(user) 
+    }
+    catch (err) {
+        throw new Error(`Error retrieving User with ID of: ${req.params.userId} ${err.message}`)
+    }
 }
 
-const updateUser = (req, res, next) => {
-    res
-    .status(200)
-    .setHeader('Content-Type', 'application/json')
-    .json( { success: true, msg: `Update the User with id: ${req.params.userId}`}) // ${req.params.songId}
-}
+const updateUser = async (req, res, next) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.params.userId, {
+            $set: req.body
+        }, { new: true});
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json(user) 
+    }
+    catch (err) {}
+        throw new Error(`Error updating User with ID of: ${req.params.userId} ${err.message}`)
+    }
 
-const deleteUser = (req, res, next) => {
-    res
-    .status(200)
-    .setHeader('Content-Type', 'application/json')
-    .json( { success: true, msg: `Delete the User with id: ${req.params.userId}`}) // ${req.params.songId}
+const deleteUser = async (req, res, next) => {
+    try {
+        await User.findByIdAndDelete(req.params.UserId);
+        res
+        .status(200)
+        .setHeader('Content-Type', 'application/json')
+        .json( { success: true, msg: `Delete the User with id: ${req.params.userId}`}) 
+    }
+    catch (err) {
+        throw new Error(`Error deleting User with ID of: ${req.params.userId} ${err.message}`)
+    }
 }
 
 module.exports = {
