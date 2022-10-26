@@ -126,7 +126,7 @@ const postArtistImage = async(req, res, next) => {
     // Check if the file size is greater than the max file size stated from the config file where the max size limit was set at 100000000 bytes or 100000 mega-bytes. If the file size exceeds the MAX_FILE_SIZE, throw a new Error with the following message: ‘Image exceeds size of ${process.env.MAX_FILE_SIZE}’.
     if (file.size > process.env.MAX_FILE_SIZE) throw new Error(`Image exceeds size of ${process.env.MAX_FILE_SIZE}`);
     // Now, name the file by adding a new key-value like this:
-    file.name = `photo_${file.name}`
+    file.name = `photo_${path.parse(file.name).ext}`
     // Now, create a variable called ‘filePath’ equal to __dirname + ‘/files’ + file.name
     const filePath = process.env.FILE_UPLOAD_PATH + file.name
     // Now create a method that moves the file to the filePath variable and with a second argument (async) to handle uploading the new image for that artist to the database.
