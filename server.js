@@ -8,13 +8,17 @@ const artist = require('./routes/artist');
 const song = require('./routes/song');
 const user = require('./routes/user');
 const connectDB = require('./config/db');
-
+const cookieParser = require('cookie-parser');
+const fileupload = require('express-fileupload');
 
 dotenv.config({ path: './config/config.env' });
 
 connectDB();
 
 const app = express(); 
+
+app.use(cookieParser());
+app.use(fileupload());
 
 
 if (process.env.NODE_ENV === 'development') {

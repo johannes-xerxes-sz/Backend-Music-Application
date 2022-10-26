@@ -10,19 +10,22 @@ const {
  
 } = require('../controllers/userController');
 const reqRecievedLogger  = require('../middlewares/reqRecievedLogger')
-const {userValidator} = require('../middlewares/utils/validators')
+const {
+    userValidator,
+    adminValidator
+} = require('../middlewares/utils/validators')
  
 
 //root
 
 router.route('/')
-    .get(reqRecievedLogger, getUsers)
+    .get(reqRecievedLogger, adminValidator, getUsers)
     .post(reqRecievedLogger, userValidator, postUser)
     .delete(reqRecievedLogger, deleteUsers)
 
  
     router.route('/:userId')
-    .get(reqRecievedLogger, getUser)
+    .get(reqRecievedLogger, getUser) 
     .put(reqRecievedLogger, updateUser)
     .delete(reqRecievedLogger, deleteUser)
 

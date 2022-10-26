@@ -68,10 +68,24 @@ const userValidator = (req, res, next) => {
         .end(`Request for path: ${req.protocol} and method: ${req.method} is missing payload`);
     }
 }
+
+const adminValidator = (req, res, next) => {
+    if (req.user.admin) {
+        next()
+    }
+    else {
+        res
+        .status(403)
+        .setHeader('Content-Type', 'application/json')
+        .json({success: false, msg: 'Unauthorized to access this resource!'})
+    }
+}
+
 module.exports = {
     songValidator,
     userValidator,
-    artistValidator
+    artistValidator,
+    adminValidator
 }
 
 //params, body, query

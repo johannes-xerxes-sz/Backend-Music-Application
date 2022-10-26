@@ -184,7 +184,8 @@ const getSongRating = async (req, res, next) => {
         .setHeader('Content-Type', 'application/json')
         .json(rating)
 
-    } catch (err) {
+    } 
+    catch (err) {
         throw new Error (`Error retrieving raiting with id: ${req.params.ratingId}, ${err.message}`)
     }
 }
