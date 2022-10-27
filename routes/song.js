@@ -15,22 +15,22 @@ const {
     deleteSongRating
 
 } = require('../controllers/songController');
-const reqRecievedLogger = require('../middlewares/reqRecievedLogger')
-const {songValidator} = require('../middlewares/utils/validators')
- 
+const reqRecievedLogger = require('../middlewares/reqRecievedLogger');
+const {songValidator} = require('../middlewares/utils/validators');
+const protectedRoute = require('../middlewares/auth');
 
 //root
 
 router.route('/')
     .get(reqRecievedLogger, getSongs)
-    .post(reqRecievedLogger, songValidator, postSong)
-    .delete(reqRecievedLogger, deleteSongs)
+    .post(reqRecievedLogger, protectedRoute, songValidator, postSong)
+    .delete(reqRecievedLogger, protectedRoute, deleteSongs)
 
 
     router.route('/:songId')
     .get(reqRecievedLogger, getSong)
-    .put(reqRecievedLogger, updateSong)
-    .delete(reqRecievedLogger, deleteSong)
+    .put(reqRecievedLogger, protectedRoute, updateSong)
+    .delete(reqRecievedLogger, protectedRoute, deleteSong)
 
     router.route('/:songId/ratings')
     .get(reqRecievedLogger, getSongRatings)

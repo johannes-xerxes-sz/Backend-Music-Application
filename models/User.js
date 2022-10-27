@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new Schema({
     userName: {  
@@ -64,16 +67,34 @@ const UserSchema = new Schema({
     timestamps: true
 }
 );
+UserSchema.pre('save',  function (next) {
+        this.userName = this.userName.trim();
+        this.firstName = this.firstName.trim();
+        this.lastName = this.lastName.trim();
+        next();
+       
+    })
 
-UserSchema.pre('save', function (next) {
-    this.userName = this.userName.trim();
+UserSchema.pre('save', async function (next) {
+/*     this.userName = this.userName.trim();
     this.firstName = this.firstName.trim();
     this.lastName = this.lastName.trim();
+    */
+    if (!this.isModified('password')) next();
 
-    next();
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt)
 })
 
+UserSchema.methods.getSignedJwtToken = function() { 
+    return jwt.sign({ id: this._id}, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRE
+    })
+}
 
+UserSchema.methods.matchPassword = async function(enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password)
+}
 
 UserSchema.post('save', function ()  {
     this.firstName = this.gender.toUpperCase();

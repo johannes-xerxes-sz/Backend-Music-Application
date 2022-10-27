@@ -9,7 +9,6 @@ const getUsers = async (req, res, next) => {
             userName,
             gender,
             email,
-            password,
             firstName,
             lastName,
             limit,
@@ -20,7 +19,6 @@ const getUsers = async (req, res, next) => {
         if (userName) filter.userName = true;
         if (gender) filter.gender = true;
         if (email) filter.email = true;
-        if (password) filter.password = true;
         if (firstName) filter.firstName = true;
         if (lastName) filter.lastName = true;
         if (age) filter.age = true;
@@ -45,18 +43,21 @@ const getUsers = async (req, res, next) => {
 
 }
 
-const postUser = async (req, res, next) => {
+const createUser = async (req, res, next) => {
     try {
         const user = await User.create(req.body);
+   
         
-        res
+        sendTokenResponse(user, 201, res)
+
+/*         res
         .status(201)
         .setHeader('Content-Type', 'application/json')
-        .json(user)
+        .json(user) */
     }
     catch (err)
     {
-        throw new Error(`Error deleting Users: ${err.message}`);
+        throw new Error(`Error retrieving Users: ${err.message}`);
     }
 }
 
@@ -119,13 +120,39 @@ const deleteUser = async (req, res, next) => {
     }
 }
 
+const login = async (req, res, next) => {
+    const {email, password} = req.body;
+    if (!email || !password) throw new Error('Please provide an email and password');
+    const user = await User.findOne({ email }).select('+password');
+    if (!user) throw new Error('Invalid Credentials')
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) throw new Error('Invalid Credentials');
+    sendTokenResponse(user, 200, res);
+
+}
+
+const sendTokenResponse = (user, statusCode, res) => {
+    const token = user.getSignedJwtToken();
+    const options = {
+        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+        httpOnly: true
+    }
+    if (process.env.NODE_ENV === 'production') options.secure = true;
+
+    res
+    .status(statusCode)
+    .cookie('token', token, options)
+    .json({ success: true, token})
+}
+
 module.exports = {
     
     getUsers,
-    postUser,
+    createUser,
     deleteUsers,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    login
 
 }

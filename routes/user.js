@@ -2,31 +2,35 @@ const express = require('express');
 const router = express.Router();
 const {
     getUsers,
-    postUser,
+    createUser,
     deleteUsers,
     getUser,
-    updateUser,
-    deleteUser
+    updateUser, 
+    deleteUser,
+    login
  
 } = require('../controllers/userController');
-const reqRecievedLogger  = require('../middlewares/reqRecievedLogger')
+const protectedRoute = require('../middlewares/auth')
+const reqRecievedLogger  = require('../middlewares/reqRecievedLogger');
 const {
     userValidator,
     adminValidator
 } = require('../middlewares/utils/validators')
- 
 
 //root
 
 router.route('/')
-    .get(reqRecievedLogger, adminValidator, getUsers)
-    .post(reqRecievedLogger, userValidator, postUser)
-    .delete(reqRecievedLogger, deleteUsers)
+    .get(reqRecievedLogger, protectedRoute, adminValidator, getUsers)
+    .post(reqRecievedLogger, userValidator, createUser)
+    .delete(reqRecievedLogger, protectedRoute, adminValidator, deleteUsers)
 
+
+router.route('/login')
+    .post(reqRecievedLogger, login)
  
-    router.route('/:userId')
+router.route('/:userId')
     .get(reqRecievedLogger, getUser) 
-    .put(reqRecievedLogger, updateUser)
-    .delete(reqRecievedLogger, deleteUser)
+    .put(reqRecievedLogger, protectedRoute, updateUser)
+    .delete(reqRecievedLogger, protectedRoute, deleteUser)
 
     module.exports = router;
