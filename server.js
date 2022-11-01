@@ -10,6 +10,12 @@ const user = require('./routes/user');
 const connectDB = require('./config/db');
 const cookieParser = require('cookie-parser');
 const fileupload = require('express-fileupload');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const hpp = require('hpp');
+const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 
 dotenv.config({ path: './config/config.env' });
 
@@ -20,6 +26,23 @@ const app = express();
 app.use(cookieParser());
 app.use(fileupload());
 
+app.use(mongoSanitize());
+
+app.use(xss());
+
+app.use(hpp());
+
+const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000, 
+    max: 100
+})
+
+app.use(limiter);
+
+app.use(helmet());
+
+
+app.use(cors());
 
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
