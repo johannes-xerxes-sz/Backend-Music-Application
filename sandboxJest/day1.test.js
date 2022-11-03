@@ -17,7 +17,7 @@ afterAll(() => {
     name = 'done!'
 })
 
-test('should expect to check if the value of letter is NOT equal to tin', () => {
+test('should expect to check if the value of letter is NOT equal to ti', () => {
     expect(name).not.toBe('tin')
 })
 
@@ -58,8 +58,8 @@ describe('test stringTest function', () => {
     //! =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     //! CASE 1 
     test('should return the string if empty value, and check if the expected value is not true ', () => {
-        expect(stringTest(' ')).not.toBeUndefined();
-        expect(stringTest).toBeTruthy();
+        expect(stringTest(undefined)).toBe(false);
+        expect(stringTest()).not.toBeTruthy();
 
     })
     //! =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -87,7 +87,6 @@ describe('test arrayTest function', () => {
     //! CASE 1
     test('should turn false if array is empty, then use a match to check that is not truth', () =>{
         expect(arrayTest([]).length).toBeFalsy()
-        expect(arrayTest().length).not.toBeTruthy()
 
     })
 
