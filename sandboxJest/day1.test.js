@@ -18,7 +18,7 @@ afterAll(() => {
 })
 
 test('should expect to check if the value of letter is NOT equal to ti', () => {
-    expect(name).not.toBe('tin')
+    expect(name).not.toEqual('tin')
 })
 
 
