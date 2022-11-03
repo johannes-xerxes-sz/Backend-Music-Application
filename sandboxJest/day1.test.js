@@ -57,7 +57,7 @@ describe('test twoNumbers function', () => {
 describe('test stringTest function', () => {
     //! =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     //! CASE 1 
-    test('should return the string if empty value, and check if the expected value is not true ', () => {
+    test('should return the string with undefined or empty value, and check if the expected value is not true ', () => {
         expect(stringTest(undefined)).toBe(false);
         expect(stringTest()).not.toBeTruthy();
 
