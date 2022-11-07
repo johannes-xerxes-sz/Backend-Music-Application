@@ -114,12 +114,13 @@ describe ('tests upperCaseWords function' , () => {
 
     //! Case 1: Use a matcher to check if a error message with a message: ‘Missing words array’ if no array 
     test('should return array is empty or undefined', () => {
-        expect( () => upperCaseWords(arr)).toThrow(Error)
+        words = [undefined];
+        expect( () => upperCaseWords(words)).toThrow(Error)
     })
     
     //! Case 2:  Use a matcher to check if the returned array is the capitalized version of the passed in words 
     test('should return array the capitalized version of the words', () => {
-        words = ['cat','dog'];
-        expect(upperCaseWords(words)).toEqual(['CAT','DOG'])
+        words = ['cat','dog','pineapple'];
+        expect(upperCaseWords(words)).toEqual(['CAT','DOG','PINEAPPLE'])
     })
 }) 
