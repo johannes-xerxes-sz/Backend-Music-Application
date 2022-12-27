@@ -8,8 +8,11 @@ Backend-Music-Application
 * [Setup](#setup)
 * [Features](#features)
 * [Contact](#contact)
+* [Contributing](#contributing)
+
 
 ## General info
+A music application built with Node.js, Express, and various dependencies such as JWT, bcryptjs, and mongoose would handle the server-side logic and data management for the application. This would include authenticating users with JWT, storing and hashing passwords with bcryptjs, and interacting with a database using mongoose. The application would also use middlewares like cors, helmet, and morgan to handle CORS headers, secure the application, and log HTTP requests, respectively. Other dependencies like dotenv and validator would be used to manage environment variables and validate data, respectively. Overall, these technologies would work together to build a backend that can handle incoming requests, authenticate users, store and retrieve data, and return responses to the client.
 
 
 ## Technologies
